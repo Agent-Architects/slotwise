@@ -25,7 +25,7 @@ scripts can do anything the UI can.
 Needs Node 22.13 or newer.
 
 ```bash
-git clone <this-repo-url> slotwise && cd slotwise
+git clone https://github.com/Agent-Architects/slotwise.git slotwise && cd slotwise
 npm ci
 npm run --silent setup:local # builds, starts a throwaway server, creates an owner, books and cancels; prints JSON
 npm run dev:node            # then try it yourself: http://localhost:8787 (signup open, mock calendar)
