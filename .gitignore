@@ -1,0 +1,32 @@
+# Local state lives at the repo root only (scripts/check-clean.mjs skips the same names there and nowhere else).
+node_modules
+/dist/
+public/assets/app.js
+public/assets/app.js.map
+/.wrangler/
+.dev.vars
+.env
+.env.*
+!.env.example
+/data/
+*.sqlite
+*.sqlite-*
+*.sqlite.key
+/artifacts/
+/test-results/
+/playwright-report/
+/.verify/
+/.vitest/
+# Account-specific deploy state: generated Wrangler config with your D1 id and domain, setup code, saved vars.
+/.deploy/
+wrangler.local.toml
+# Resumable agent setup state (secrets handed over through files live here too).
+/.setup/
+# Local agent settings, logs, OS junk, coverage and key material.
+.claude/settings.local.json
+*.db
+*.log
+.DS_Store
+coverage/
+*.pem
+*.key

@@ -1,0 +1,33 @@
+# Base Wrangler config. Account-specific values never live here:
+# scripts/deploy-cloudflare.sh copies this file to wrangler.local.toml (gitignored), fills in your real D1
+# database_id and optional custom domain route there, and deploys with `--config wrangler.local.toml`.
+# Local dev (`npm run dev:worker`) uses this file as is.
+name = "slotwise"
+main = "src/worker.ts"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+# On for a workers.dev-only deploy. With --domain the deploy script sets both to false in wrangler.local.toml, so the
+# Worker answers only on the custom domain.
+workers_dev = true
+preview_urls = true
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/", "/api/*", "/oauth/*", "/healthz"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "slotwise"
+# Placeholder. The deploy script writes the real id to wrangler.local.toml only. Local dev accepts any value.
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+[vars]
+ALLOW_SIGNUP = "false"
+MOCK_CALENDAR = "false"
+EMAIL_PROVIDER = "log"
+
+[observability]
+enabled = true

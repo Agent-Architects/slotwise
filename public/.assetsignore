@@ -1,0 +1,3 @@
+# Files in public/ that Wrangler must not upload as public static assets.
+# Source maps would publish the full original source of the web UI.
+*.map

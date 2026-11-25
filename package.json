@@ -1,0 +1,51 @@
+{
+  "name": "slotwise",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hostable scheduling app with booking pages, a JSON API and a CLI. Runs on Cloudflare Workers + D1 or Node + SQLite.",
+  "license": "MIT",
+  "bin": {
+    "slotwise": "./bin/slotwise.mjs"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "build:web": "esbuild web/main.tsx --bundle --minify --sourcemap --format=esm --target=es2022 --jsx=automatic --jsx-import-source=preact --outfile=public/assets/app.js",
+    "build:node": "esbuild src/node.ts --bundle --platform=node --format=esm --target=node22 --packages=external --outfile=dist/node.mjs",
+    "build:cli": "esbuild src/cli/index.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist/cli.mjs",
+    "build": "npm run build:web && npm run build:node && npm run build:cli",
+    "start": "node dist/node.mjs",
+    "dev:node": "npm run build && MOCK_CALENDAR=true ALLOW_SIGNUP=true node dist/node.mjs",
+    "dev:worker": "npm run build:web && node scripts/dev-vars.mjs && wrangler d1 migrations apply slotwise --local && wrangler dev --port 8788",
+    "typecheck": "tsc -p .",
+    "test": "vitest run",
+    "test:unit": "vitest run test/unit",
+    "check-clean": "node scripts/check-clean.mjs",
+    "brand": "node scripts/brand.mjs",
+    "legal": "node scripts/legal.mjs",
+    "verify": "node skills/verify-slotwise/scripts/verify.mjs",
+    "cli": "node bin/slotwise.mjs",
+    "setup:local": "node scripts/setup-local.mjs",
+    "smoke": "node scripts/smoke-booking.mjs",
+    "deploy:cloudflare": "bash scripts/deploy-cloudflare.sh",
+    "deploy:cloudflare:dry-run": "bash scripts/deploy-cloudflare.sh --dry-run",
+    "prepare": "npm run build:cli"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.11",
+    "hono": "^4.13.21",
+    "preact": "^11.2.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261123.1",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.1",
+    "wrangler": "^4.166.0"
+  }
+}
